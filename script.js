@@ -19,6 +19,7 @@
 // PROMPT: PLAY AGAIN? (IF YES, RESET BOARD AND START OVER)
 
 let board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+let chosenSymbol;
 
 function displayBoard() {
     console.clear();
@@ -40,6 +41,19 @@ function playGame() {
 
     displayRules();
 
-    let chosenSymbol = prompt("Would you prefer to use Xs or Os?");
+    while (true) {
+        chosenSymbol = prompt("Would you prefer to use X or O?").toUpperCase();
+    
+        if (chosenSymbol === "X" || chosenSymbol === "O") {
+            break;
+        }
+    
+        alert("Invalid choice! Please enter X or O.");
+    }
+
+    console.log(`You have chosen: ${chosenSymbol}`);
+    
+
+
 
 }
