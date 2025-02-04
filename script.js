@@ -15,6 +15,7 @@
 
 // DISPLAY FINAL GAME BOARD
 // DISPLAY RESULT (WIN/LOSS/DRAW)
+// DISPLAY RUNNING SCORE
 // PROMPT: PLAY AGAIN? (IF YES, RESET BOARD AND START OVER)
 
 let board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
@@ -26,4 +27,14 @@ function displayBoard() {
     console.log(` ${board[3]} | ${board[4]} | ${board[5]} `);
     console.log("---+---+---");
     console.log(` ${board[6]} | ${board[7]} | ${board[8]} `);
+}
+
+function playGame() {
+    // GAME CODE GOES HERE
+}
+
+function displayRules() {
+    console.log("Welcome to Tic Tac Toe!")
+    console.log("The goal is to get 3 Xs or Os in a row or diagonally and beat your opponent!")
+    console.log("Enter 'quit' at any point to quit the game. Good luck!")
 }
