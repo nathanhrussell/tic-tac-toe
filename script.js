@@ -20,6 +20,7 @@
 
 let board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 let chosenSymbol;
+let chosenTurn;
 
 function displayBoard() {
     console.clear();
@@ -51,8 +52,23 @@ function playGame() {
         alert("Invalid choice! Please enter X or O.");
     }
 
-    console.log(`You have chosen: ${chosenSymbol}`);
+    console.log(`You have chosen: ${chosenSymbol}!`);
+
+    while (true) {
+        chosenTurn = prompt("Would you like to go first? (y/n)").toLowerCase();
     
+        if (chosenTurn === "y" || chosenTurn === "n") {
+            break;
+        }
+    
+        alert("Invalid choice! Please enter 'y' or 'n'.");
+}
+
+    if (chosenTurn === "y") {
+        console.log("You have chosen to go first!");
+    } else {
+        console.log("You have chosen to go second!");
+    }
 
 
 
