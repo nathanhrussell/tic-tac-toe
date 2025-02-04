@@ -29,12 +29,17 @@ function displayBoard() {
     console.log(` ${board[6]} | ${board[7]} | ${board[8]} `);
 }
 
-function playGame() {
-    // GAME CODE GOES HERE
-}
-
 function displayRules() {
     console.log("Welcome to Tic Tac Toe!")
     console.log("The goal is to get 3 Xs or Os in a row or diagonally and beat your opponent!")
     console.log("Enter 'quit' at any point to quit the game. Good luck!")
+}
+
+
+function playGame() {
+
+    displayRules();
+
+    let chosenSymbol = prompt("Would you prefer to use Xs or Os?");
+
 }
