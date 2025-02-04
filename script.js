@@ -17,13 +17,13 @@
 // DISPLAY RESULT (WIN/LOSS/DRAW)
 // PROMPT: PLAY AGAIN? (IF YES, RESET BOARD AND START OVER)
 
-let board = [" ", " ", " ", " ", " ", " ", " ", " ", " "];
+let board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
 function displayBoard() {
     console.clear();
-    console.log(" " + board[0] + " | " + board[1] + " | " + board[2] + " ");
+    console.log(` ${board[0]} | ${board[1]} | ${board[2]} `);
     console.log("---+---+---");
-    console.log(" " + board[3] + " | " + board[4] + " | " + board[5] + " ");
+    console.log(` ${board[3]} | ${board[4]} | ${board[5]} `);
     console.log("---+---+---");
-    console.log(" " + board[6] + " | " + board[7] + " | " + board[8] + " ");
+    console.log(` ${board[6]} | ${board[7]} | ${board[8]} `);
 }
