@@ -47,7 +47,7 @@ function getPlayerDetails() {
     while (true) {
         playerOneChosenSymbol = prompt(`${playerOneName}, would you prefer to use X or O?`).toUpperCase();
     
-        if (chosenSymbol === "X" || chosenSymbol === "O") {
+        if (playerOneChosenSymbol === "X" || playerOneChosenSymbol === "O") {
             break;
         }
 
@@ -66,7 +66,7 @@ function getPlayerDetails() {
     while (true) {
         playerOneChosenTurn = prompt(`${playerOneName}, would you like to go first? (y/n)`).toLowerCase();
     
-        if (playerOneChosenTurn === "y" || chosenTurn === "n") {
+        if (playerOneChosenTurn === "y" || playerOneChosenTurn === "n") {
             break;
         }
     
