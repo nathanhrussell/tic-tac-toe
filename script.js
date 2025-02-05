@@ -23,6 +23,7 @@ let playerOneChosenSymbol;
 let playerTwoChosenSymbol;
 let playerOneName;
 let playerTwoName;
+let playerOneChosenTurn;
 
 function displayBoard() {
     console.clear();
@@ -44,7 +45,7 @@ function getPlayerDetails() {
     playerTwoName = prompt("Player two, please enter your name.");
 
     while (true) {
-        playerOneChosenSymbol = prompt("Player one, would you prefer to use X or O?").toUpperCase();
+        playerOneChosenSymbol = prompt(`${playerOneName}, would you prefer to use X or O?`).toUpperCase();
     
         if (chosenSymbol === "X" || chosenSymbol === "O") {
             break;
@@ -63,19 +64,19 @@ function getPlayerDetails() {
     console.log(`${playerTwoName}, you will use: ${chosenSymbol}.`);
 
     while (true) {
-        chosenTurn = prompt("Would you like to go first? (y/n)").toLowerCase();
+        playerOneChosenTurn = prompt(`${playerOneName}, would you like to go first? (y/n)`).toLowerCase();
     
-        if (chosenTurn === "y" || chosenTurn === "n") {
+        if (playerOneChosenTurn === "y" || chosenTurn === "n") {
             break;
         }
     
         alert("Invalid choice! Please enter 'y' or 'n'.");
 }
 
-    if (chosenTurn === "y") {
-        console.log("You have chosen to go first!");
+    if (playerOneChosenTurn === "y") {
+        console.log(`${playerOneName}, you have chosen to go first!`);
     } else {
-        console.log("You have chosen to go second!");
+        console.log(`${playerOneName}, you have chosen to go second!`);
     }
 }
 
@@ -83,6 +84,7 @@ function getPlayerDetails() {
 function playGame() {
 
     displayRules();
+    getPlayerDetails();
 
 
 
