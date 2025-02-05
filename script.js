@@ -60,8 +60,8 @@ function getPlayerDetails() {
         alert("Invalid choice! Please enter X or O.");
     }
 
-    console.log(`${playerOneName}, you have chosen: ${chosenSymbol}!`);
-    console.log(`${playerTwoName}, you will use: ${chosenSymbol}.`);
+    console.log(`${playerOneName}, you have chosen: ${playerOneChosenSymbol}!`);
+    console.log(`${playerTwoName}, you will use: ${playerTwoChosenSymbol}.`);
 
     while (true) {
         playerOneChosenTurn = prompt(`${playerOneName}, would you like to go first? (y/n)`).toLowerCase();
