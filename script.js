@@ -44,10 +44,16 @@ function getPlayerDetails() {
     playerTwoName = prompt("Player two, please enter your name.");
 
     while (true) {
-        chosenSymbol = prompt("Would you prefer to use X or O?").toUpperCase();
+        playerOneChosenSymbol = prompt("Player one, would you prefer to use X or O?").toUpperCase();
     
         if (chosenSymbol === "X" || chosenSymbol === "O") {
             break;
+        }
+
+        if (playerOneChosenSymbol === "X") {
+            playerTwoChosenSymbol = "O";
+        } else {
+            playerTwoChosenSymbol = "X"
         }
     
         alert("Invalid choice! Please enter X or O.");
