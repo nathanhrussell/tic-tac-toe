@@ -1,29 +1,10 @@
-// START GAME COMMAND
-// DISPLAY RULES (INFORM PLAYER THEY CAN ENTER "QUIT" AT ANY TIME)
-// PROMPT: CHOOSE X OR O (WITH INVALID INPUT CHECK)
-// PROMPT: WOULD YOU LIKE TO GO FIRST? (Y/N WITH INVALID INPUT CHECK)
-// INITIALISE EMPTY GAME BOARD
-
-// WHILE GAME IS NOT OVER:
-//     DISPLAY GAME BOARD
-//     IF IT’S PLAYER’S TURN:
-//         PROMPT PLAYER FOR MOVE (VALIDATE INPUT: ENSURE SPACE IS FREE)
-//     ELSE:
-//         COMPUTER MAKES MOVE
-//     CHECK IF THERE IS A WINNER OR A DRAW
-//     SWITCH TURNS
-
-// DISPLAY FINAL GAME BOARD
-// DISPLAY RESULT (WIN/LOSS/DRAW)
-// DISPLAY RUNNING SCORE
-// PROMPT: PLAY AGAIN? (IF YES, RESET BOARD AND START OVER)
-
 let board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 let playerOneChosenSymbol;
 let playerTwoChosenSymbol;
 let playerOneName;
 let playerTwoName;
 let playerOneChosenTurn;
+let currentPlayer;
 
 function displayBoard() {
     console.clear();
@@ -75,15 +56,43 @@ function getPlayerDetails() {
     }
 }
 
+function executeMove() {
+    let currentSymbol = currentPlayer === playerOneName ? playerOneChosenSymbol : playerTwoChosenSymbol;
+
+    while (true) {
+        let move = prompt(`${currentPlayer}, enter the number (1-9) of the space you want to mark:`);
+
+        if (move.toLowerCase() === "quit") {
+            console.log("Game exited.");
+            return;
+        }
+
+        move = parseInt(move) - 1;
+
+        if (isNaN(move) || move < 0 || move > 8 || board[move] === "X" || board[move] === "O") {
+            alert("Invalid move! Choose an empty space (1-9).");
+        } else {
+            board[move] = currentSymbol;
+            break;
+        }
+    }
+
+    displayBoard();
+    switchTurn();
+}
+
+function switchTurn() {
+    currentPlayer = currentPlayer === playerOneName ? playerTwoName : playerOneName;
+}
 
 function playGame() {
 
     displayRules();
     getPlayerDetails();
+    displayBoard();
 
+    while (true) {
+        executeMove();
 
-
-
-
-
+    }
 }
