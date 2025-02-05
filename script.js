@@ -48,20 +48,15 @@ function getPlayerDetails() {
         playerOneChosenSymbol = prompt(`${playerOneName}, would you prefer to use X or O?`).toUpperCase();
     
         if (playerOneChosenSymbol === "X" || playerOneChosenSymbol === "O") {
+            playerTwoChosenSymbol = playerOneChosenSymbol === "X" ? "O" : "X";
             break;
-        }
-
-        if (playerOneChosenSymbol === "X") {
-            playerTwoChosenSymbol = "O";
-        } else {
-            playerTwoChosenSymbol = "X"
         }
     
         alert("Invalid choice! Please enter X or O.");
     }
 
-    console.log(`${playerOneName}, you have chosen: ${playerOneChosenSymbol}!`);
-    console.log(`${playerTwoName}, you will use: ${playerTwoChosenSymbol}.`);
+    console.log(`${playerOneName}, you have chosen ${playerOneChosenSymbol}.`);
+    console.log(`${playerTwoName}, you will use ${playerTwoChosenSymbol}.`);
 
     while (true) {
         playerOneChosenTurn = prompt(`${playerOneName}, would you like to go first? (y/n)`).toLowerCase();
