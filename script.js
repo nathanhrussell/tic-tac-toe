@@ -19,8 +19,10 @@
 // PROMPT: PLAY AGAIN? (IF YES, RESET BOARD AND START OVER)
 
 let board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-let chosenSymbol;
-let chosenTurn;
+let playerOneChosenSymbol;
+let playerTwoChosenSymbol;
+let playerOneName;
+let playerTwoName;
 
 function displayBoard() {
     console.clear();
@@ -37,10 +39,9 @@ function displayRules() {
     console.log("Enter 'quit' at any point to quit the game. Good luck!")
 }
 
-
-function playGame() {
-
-    displayRules();
+function getPlayerDetails() {
+    playerOneName = prompt("Player one, please enter your name.");
+    playerTwoName = prompt("Player two, please enter your name.");
 
     while (true) {
         chosenSymbol = prompt("Would you prefer to use X or O?").toUpperCase();
@@ -69,6 +70,15 @@ function playGame() {
     } else {
         console.log("You have chosen to go second!");
     }
+}
+
+
+function playGame() {
+
+    displayRules();
+
+
+
 
 
 
