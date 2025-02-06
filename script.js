@@ -50,9 +50,9 @@ function getPlayerDetails() {
 }
 
     if (playerOneChosenTurn === "y") {
-        console.log(`${playerOneName}, you have chosen to go first!`);
+        currentPlayer = playerOneName;
     } else {
-        console.log(`${playerOneName}, you have chosen to go second!`);
+        currentPlayer = playerTwoName;
     }
 }
 
@@ -98,8 +98,7 @@ function playGame() {
 }
 
 // TODO: 
-// MOVE VARIABLE CURRENTLY RETURNING UNDEFINED - FIX
-// DETECT A DRAW WHEN ALL SPACES FILLED
 // DETECT A WIN/LOSS
+// DETECT A DRAW WHEN ALL SPACES FILLED
 // DISPLAY RUNNING SCORE
 // DISPLAY PLAY AGAIN OPTION 
