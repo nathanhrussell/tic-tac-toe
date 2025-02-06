@@ -85,6 +85,34 @@ function switchTurn() {
     currentPlayer = currentPlayer === playerOneName ? playerTwoName : playerOneName;
 }
 
+function checkWinner() {
+    const winningCombinations = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ];
+
+    for (let combo of winningCombinations) {
+        const [a, b, c] = combo;
+
+        if (board[a] === board[b] && board[a] === board[c]) {
+            let winnerSymbol = board[a];
+            let winnerName = (winnerSymbol === playerOneChosenSymbol) ? playerOneName : playerTwoName;
+
+            console.log(`We have a winner! ${winnerName} wins!`);
+            return winnerName;
+        }
+    }
+
+    return null;
+}
+
+
 function playGame() {
 
     displayRules();
@@ -93,6 +121,7 @@ function playGame() {
 
     while (true) {
         executeMove();
+        checkWinner();
 
     }
 }
