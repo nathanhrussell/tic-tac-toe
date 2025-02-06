@@ -5,6 +5,7 @@ let playerOneName;
 let playerTwoName;
 let playerOneChosenTurn;
 let currentPlayer;
+let gameOver = false;
 
 function displayBoard() {
     console.clear();
@@ -54,9 +55,16 @@ function getPlayerDetails() {
     } else {
         currentPlayer = playerTwoName;
     }
+
+    return
 }
 
 function executeMove() {
+    if (gameOver) {
+        console.log("The game is over! Start a new game to play again.");
+        return;
+    }
+
     let currentSymbol = currentPlayer === playerOneName ? playerOneChosenSymbol : playerTwoChosenSymbol;
 
     while (true) {
@@ -64,6 +72,7 @@ function executeMove() {
 
         if (move.toLowerCase() === "quit") {
             console.log("Game exited.");
+            gameOver = true;
             return;
         }
 
@@ -78,8 +87,23 @@ function executeMove() {
     }
 
     displayBoard();
+
+    let winner = checkWinner();
+    if (winner) {
+        console.log(`🎉 Congratulations, ${winner}! You won the game!`);
+        gameOver = true;
+        return;
+    }
+
+    if (board.every(space => space === "X" || space === "O")) {
+        console.log("It's a draw! No more moves left.");
+        gameOver = true;
+        return;
+    }
+
     switchTurn();
 }
+
 
 function switchTurn() {
     currentPlayer = currentPlayer === playerOneName ? playerTwoName : playerOneName;
@@ -119,15 +143,12 @@ function playGame() {
     getPlayerDetails();
     displayBoard();
 
-    while (true) {
+    while (!gameOver) {
         executeMove();
-        checkWinner();
-
     }
 }
 
 // TODO: 
-// DETECT A WIN/LOSS
-// DETECT A DRAW WHEN ALL SPACES FILLED
+// FIX BROKEN QUIT FUNCTIONALITY
 // DISPLAY RUNNING SCORE
 // DISPLAY PLAY AGAIN OPTION 
