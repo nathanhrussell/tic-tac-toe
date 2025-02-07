@@ -27,7 +27,6 @@ function checkQuit(input) {
     if (input && input.toLowerCase() === "quit") {
         gameOver = true;
         quitGame = true;
-        console.log("Game exited.");
         return true;
     }
     return false;
