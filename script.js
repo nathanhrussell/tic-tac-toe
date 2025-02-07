@@ -22,13 +22,25 @@ function displayRules() {
     console.log("Enter 'quit' at any point to quit the game. Good luck!")
 }
 
+function checkQuit(input) {
+    if (input && input.toLowerCase() === "quit") {
+        gameOver = true;
+        console.log("Game exited.");
+        return true;
+    }
+    return false;
+}
+
 function getPlayerDetails() {
     playerOneName = prompt("Player one, please enter your name.");
+    if (checkQuit(playerOneName)) return;
     playerTwoName = prompt("Player two, please enter your name.");
+    if (checkQuit(playerTwoName)) return;
 
     while (true) {
         playerOneChosenSymbol = prompt(`${playerOneName}, would you prefer to use X or O?`).toUpperCase();
-    
+        if (checkQuit(playerOneChosenSymbol)) return;
+        
         if (playerOneChosenSymbol === "X" || playerOneChosenSymbol === "O") {
             playerTwoChosenSymbol = playerOneChosenSymbol === "X" ? "O" : "X";
             break;
@@ -42,7 +54,8 @@ function getPlayerDetails() {
 
     while (true) {
         playerOneChosenTurn = prompt(`${playerOneName}, would you like to go first? (y/n)`).toLowerCase();
-    
+        if (checkQuit(playerOneChosenTurn)) return;
+        
         if (playerOneChosenTurn === "y" || playerOneChosenTurn === "n") {
             break;
         }
@@ -70,11 +83,7 @@ function executeMove() {
     while (true) {
         let move = prompt(`${currentPlayer}, enter the number (1-9) of the space you want to mark:`);
 
-        if (move.toLowerCase() === "quit") {
-            console.log("Game exited.");
-            gameOver = true;
-            return;
-        }
+        if (checkQuit(move)) return;
 
         move = parseInt(move) - 1;
 
@@ -141,6 +150,9 @@ function playGame() {
 
     displayRules();
     getPlayerDetails();
+
+    if (gameOver) return;
+
     displayBoard();
 
     while (!gameOver) {
