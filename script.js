@@ -156,14 +156,16 @@ function playGame() {
         
         if (!playerOneName || !playerTwoName) { 
             getPlayerDetails();
+            if (gameOver || quitGame) return;
         } else { 
             playerOneChosenTurn = playerOneChosenTurn === "y" ? "n" : "y";
         }
-
+        
         currentPlayer = (playerOneChosenTurn === "y") ? playerOneName : playerTwoName;
-        console.log(`New game! This time, ${currentPlayer} will go first.`);
-
+        
         displayBoard();
+
+        console.log(`New game! This time, ${currentPlayer} will go first.`);
 
         while (!gameOver) {
             executeMove();
