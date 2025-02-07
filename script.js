@@ -6,6 +6,7 @@ let playerTwoName;
 let playerOneChosenTurn;
 let currentPlayer;
 let gameOver = false;
+let quitGame = false;
 
 function displayBoard() {
     console.clear();
@@ -25,6 +26,7 @@ function displayRules() {
 function checkQuit(input) {
     if (input && input.toLowerCase() === "quit") {
         gameOver = true;
+        quitGame = true;
         console.log("Game exited.");
         return true;
     }
@@ -147,19 +149,39 @@ function checkWinner() {
 
 
 function playGame() {
+    while (true) {
+        gameOver = false;
+        board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
-    displayRules();
-    getPlayerDetails();
+        displayRules();
+        
+        if (!playerOneName || !playerTwoName) { 
+            getPlayerDetails();
+        } else { 
+            playerOneChosenTurn = playerOneChosenTurn === "y" ? "n" : "y";
+        }
 
-    if (gameOver) return;
+        currentPlayer = (playerOneChosenTurn === "y") ? playerOneName : playerTwoName;
+        console.log(`New game! This time, ${currentPlayer} will go first.`);
 
-    displayBoard();
+        displayBoard();
 
-    while (!gameOver) {
-        executeMove();
+        while (!gameOver) {
+            executeMove();
+        }
+
+        if (quitGame) {
+            console.log("Game exited.");
+            return;
+        }
+
+        let playAgain = prompt("Would you like to play again? (y/n)").toLowerCase();
+        if (playAgain !== "y") {
+            console.log("Thanks for playing! Goodbye.");
+            return;
+        }
     }
 }
 
 // TODO: 
-// DISPLAY RUNNING SCORE
 // DISPLAY PLAY AGAIN OPTION 
