@@ -7,6 +7,10 @@ let playerOneChosenTurn;
 let currentPlayer;
 let gameOver = false;
 let quitGame = false;
+let playerOneScore = 0;
+let playerTwoScore = 0;
+let targetScore = 0;
+
 
 function displayBoard() {
     console.clear();
@@ -62,7 +66,22 @@ function getPlayerDetails() {
         }
     
         alert("Invalid choice! Please enter 'y' or 'n'.");
-}
+    }
+
+    while (true) {
+        targetScore = prompt("Enter a target score (0 for unlimited games):");
+        if (checkQuit(targetScore)) return;
+
+        targetScore = parseInt(targetScore);
+
+        if (!isNaN(targetScore) && targetScore >= 0) {
+            break;
+        }
+
+        alert("Invalid input! Enter a number 0 or higher.")
+    }
+
+    console.log(`Target score set to ${targetScore === 0 ? "No limit" : targetScore}.`);
 
     if (playerOneChosenTurn === "y") {
         currentPlayer = playerOneName;
@@ -138,7 +157,15 @@ function checkWinner() {
             let winnerSymbol = board[a];
             let winnerName = (winnerSymbol === playerOneChosenSymbol) ? playerOneName : playerTwoName;
 
-            console.log(`We have a winner! ${winnerName} wins!`);
+            if (winnerName === playerOneName) {
+                playerOneScore++;
+            } else {
+                playerTwoScore++;
+            }
+
+            console.log(`Congratulations, ${winnerName} wins! You won this round!`);
+            console.log(`Current score = ${playerOneName}: ${playerOneScore} - ${playerTwoName}: ${playerTwoScore}`)
+
             return winnerName;
         }
     }
@@ -151,6 +178,14 @@ function playGame() {
     while (true) {
         gameOver = false;
         board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
+
+        console.log(`\nCurrent score - ${playerOneName}: ${playerOneScore} - ${playerTwoName}: ${playerTwoScore}`);
+        if (targetScore > 0 && (playerOneScore >= targetScore || playerTwoScore >= targetScore)) {
+            let finalWinner = playerOneScore > playerTwoScore ? playerOneName : playerTwoName;
+            console.log(`${finalWinner} has reached the target score of ${targetScore} and wins the game!`)
+        }
+
 
         displayRules();
         
