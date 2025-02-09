@@ -209,14 +209,10 @@ function playGame() {
             return;
         }
 
-        let playAgain = prompt("Would you like to play again? (y/n)").toLowerCase();
+        let playAgain = prompt("Please enter 'y' to play again, or anything else to quit.").toLowerCase();
         if (playAgain !== "y") {
             console.log("Thanks for playing! Goodbye.");
             return;
         }
     }
 }
-
-// TODO: 
-// RUNNING SCORE MESSAGE BEFORE RULES DISPLAYED CURRENT HAS NAMES AS UNDEFINED
-// TWEAK CODE SO THAT AFTER ASKING TO PLAY AGAIN, THE TARGET SCORE PROMPT APPEARS
