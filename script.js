@@ -214,5 +214,10 @@ function playGame() {
             console.log("Thanks for playing! Goodbye.");
             return;
         }
+        playerOneScore = 0;
+        playerTwoScore = 0;
+
     }
 }
+
+// TODO: MOVE TARGET SCORE CODE INTO SEPARATE FUNCTION
