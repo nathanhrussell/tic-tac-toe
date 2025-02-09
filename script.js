@@ -179,14 +179,6 @@ function playGame() {
         gameOver = false;
         board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
-
-        console.log(`\nCurrent score - ${playerOneName}: ${playerOneScore} - ${playerTwoName}: ${playerTwoScore}`);
-        if (targetScore > 0 && (playerOneScore >= targetScore || playerTwoScore >= targetScore)) {
-            let finalWinner = playerOneScore > playerTwoScore ? playerOneName : playerTwoName;
-            console.log(`${finalWinner} has reached the target score of ${targetScore} and wins the game!`)
-        }
-
-
         displayRules();
         
         if (!playerOneName || !playerTwoName) { 
@@ -196,6 +188,12 @@ function playGame() {
             playerOneChosenTurn = playerOneChosenTurn === "y" ? "n" : "y";
         }
         
+        console.log(`\nCurrent score - ${playerOneName}: ${playerOneScore} - ${playerTwoName}: ${playerTwoScore}`);
+        if (targetScore > 0 && (playerOneScore >= targetScore || playerTwoScore >= targetScore)) {
+            let finalWinner = playerOneScore > playerTwoScore ? playerOneName : playerTwoName;
+            console.log(`${finalWinner} has reached the target score of ${targetScore} and wins the game!`)
+        }
+
         currentPlayer = (playerOneChosenTurn === "y") ? playerOneName : playerTwoName;
         
         displayBoard();
