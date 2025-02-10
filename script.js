@@ -182,6 +182,8 @@ function playGame() {
     while (true) {
         gameOver = false;
         board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+        playerOneScore = 0;
+        playerTwoScore = 0;
 
         displayRules();
         
@@ -191,12 +193,12 @@ function playGame() {
         } else { 
             playerOneChosenTurn = playerOneChosenTurn === "y" ? "n" : "y";
         }
-        
+
+        getTargetScore();
+
+        if (gameOver || quitGame) return;
+
         console.log(`\nCurrent score - ${playerOneName}: ${playerOneScore} - ${playerTwoName}: ${playerTwoScore}`);
-        if (targetScore > 0 && (playerOneScore >= targetScore || playerTwoScore >= targetScore)) {
-            let finalWinner = playerOneScore > playerTwoScore ? playerOneName : playerTwoName;
-            console.log(`${finalWinner} has reached the target score of ${targetScore} and wins the game!`)
-        }
 
         currentPlayer = (playerOneChosenTurn === "y") ? playerOneName : playerTwoName;
         
@@ -220,8 +222,11 @@ function playGame() {
         }
         playerOneScore = 0;
         playerTwoScore = 0;
+        getTargetScore();
+        if (gameOver || quitGame) return;
+
 
     }
 }
 
-// TODO: MOVE TARGET SCORE CODE INTO SEPARATE FUNCTION
+// TODO: FIX ERROR - ENTERING TARGET SCORE IS CURRENTLY IN A LOOP
