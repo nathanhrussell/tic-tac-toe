@@ -36,6 +36,25 @@ function checkQuit(input) {
     return false;
 }
 
+function getTargetScore() {
+    while (true) {
+        while (true) {
+            targetScore = prompt("Enter a target score (0 for unlimited games):");
+            if (checkQuit(targetScore)) return;
+    
+            targetScore = parseInt(targetScore);
+    
+            if (!isNaN(targetScore) && targetScore >= 0) {
+                console.log(`Target score set to ${targetScore === 0 ? "No limit" : targetScore}.`);
+                break;
+            }
+    
+            alert("Invalid input! Enter a number 0 or higher.")
+        }
+    
+    }
+}
+
 function getPlayerDetails() {
     playerOneName = prompt("Player one, please enter your name.");
     if (checkQuit(playerOneName)) return;
@@ -67,21 +86,6 @@ function getPlayerDetails() {
     
         alert("Invalid choice! Please enter 'y' or 'n'.");
     }
-
-    while (true) {
-        targetScore = prompt("Enter a target score (0 for unlimited games):");
-        if (checkQuit(targetScore)) return;
-
-        targetScore = parseInt(targetScore);
-
-        if (!isNaN(targetScore) && targetScore >= 0) {
-            break;
-        }
-
-        alert("Invalid input! Enter a number 0 or higher.")
-    }
-
-    console.log(`Target score set to ${targetScore === 0 ? "No limit" : targetScore}.`);
 
     if (playerOneChosenTurn === "y") {
         currentPlayer = playerOneName;
