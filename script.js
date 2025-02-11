@@ -37,7 +37,6 @@ function checkQuit(input) {
 }
 
 function getTargetScore() {
-    while (true) {
         while (true) {
             targetScore = prompt("Enter a target score (0 for unlimited games):");
             if (checkQuit(targetScore)) return;
@@ -46,14 +45,13 @@ function getTargetScore() {
     
             if (!isNaN(targetScore) && targetScore >= 0) {
                 console.log(`Target score set to ${targetScore === 0 ? "No limit" : targetScore}.`);
-                break;
+                return;
             }
     
             alert("Invalid input! Enter a number 0 or higher.")
         }
     
     }
-}
 
 function getPlayerDetails() {
     playerOneName = prompt("Player one, please enter your name.");
@@ -182,8 +180,6 @@ function playGame() {
     while (true) {
         gameOver = false;
         board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-        playerOneScore = 0;
-        playerTwoScore = 0;
 
         displayRules();
         
@@ -204,8 +200,6 @@ function playGame() {
         
         displayBoard();
 
-        console.log(`New game! This time, ${currentPlayer} will go first.`);
-
         while (!gameOver) {
             executeMove();
         }
@@ -220,12 +214,12 @@ function playGame() {
             console.log("Thanks for playing! Goodbye.");
             return;
         }
-        playerOneScore = 0;
-        playerTwoScore = 0;
-        getTargetScore();
-        if (gameOver || quitGame) return;
 
+        board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+        gameOver = false;
 
+        displayBoard();
+        console.log(`New game! This time, ${currentPlayer} will go first.`);
     }
 }
 
