@@ -177,7 +177,6 @@ function checkWinner() {
                 playerTwoScore++;
             }
 
-            console.log(`Congratulations, ${winnerName} wins! You won this round!`);
             console.log(`Current score = ${playerOneName}: ${playerOneScore} - ${playerTwoName}: ${playerTwoScore}`)
 
             return winnerName;
