@@ -121,10 +121,22 @@ function executeMove() {
 
     let winner = checkWinner();
     if (winner) {
-        console.log(`🎉 Congratulations, ${winner}! You won the game!`);
-        gameOver = true;
-        return;
+        console.log(`🎉 Congratulations, ${winner}! You won this round!`);
+        
+        if (targetScore > 0 && (playerOneScore >= targetScore || playerTwoScore >= targetScore)) {
+            console.log(`🏆 ${winner} has reached the target score of ${targetScore}!`);
+            console.log("Game over. Thanks for playing!");
+            gameOver = true;
+            quitGame = true;
+            return;
+        }
+
+        console.log(`New round starting... ${currentPlayer} will go first.`);
+        gameOver = false;
+        board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+        displayBoard();
     }
+    
 
     if (board.every(space => space === "X" || space === "O")) {
         console.log("It's a draw! No more moves left.");
@@ -178,11 +190,16 @@ function checkWinner() {
 
 function playGame() {
     while (true) {
+        if (targetScore > 0 && (playerOneScore >= targetScore || playerTwoScore >= targetScore)) {
+            console.log("🏁 Target score reached! Game over.");
+            return;
+        }
+    
         gameOver = false;
         board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-
+    
         displayRules();
-        
+
         if (!playerOneName || !playerTwoName) { 
             getPlayerDetails();
             if (gameOver || quitGame) return;
@@ -190,14 +207,15 @@ function playGame() {
             playerOneChosenTurn = playerOneChosenTurn === "y" ? "n" : "y";
         }
 
-        getTargetScore();
-
-        if (gameOver || quitGame) return;
-
+        if (targetScore === 0) {
+            getTargetScore();
+            if (gameOver || quitGame) return;
+        }
+        
         console.log(`\nCurrent score - ${playerOneName}: ${playerOneScore} - ${playerTwoName}: ${playerTwoScore}`);
 
         currentPlayer = (playerOneChosenTurn === "y") ? playerOneName : playerTwoName;
-        
+
         displayBoard();
 
         while (!gameOver) {
@@ -209,12 +227,16 @@ function playGame() {
             return;
         }
 
-        let playAgain = prompt("Please enter 'y' to play again, or anything else to quit.").toLowerCase();
-        if (playAgain !== "y") {
-            console.log("Thanks for playing! Goodbye.");
-            return;
+        if (targetScore === 0) { 
+            let playAgain = prompt("Please enter 'y' to play again, or anything else to quit.").toLowerCase();
+            if (playAgain !== "y") {
+                console.log("Thanks for playing! Goodbye.");
+                return;
+            }
+        } else {
+            console.log(`Next round! ${currentPlayer} goes first.`);
         }
-
+        
         board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
         gameOver = false;
 
@@ -223,4 +245,4 @@ function playGame() {
     }
 }
 
-// TODO: FIX ERROR - ENTERING TARGET SCORE IS CURRENTLY IN A LOOP
+// TODO: FIX ERROR - GAME WIN MESSAGES DO NOT APPEAR
