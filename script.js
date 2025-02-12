@@ -121,22 +121,13 @@ function executeMove() {
 
     let winner = checkWinner();
     if (winner) {
-        console.log(`🎉 Congratulations, ${winner}! You won this round!`);
-        
-        if (targetScore > 0 && (playerOneScore >= targetScore || playerTwoScore >= targetScore)) {
-            console.log(`🏆 ${winner} has reached the target score of ${targetScore}!`);
-            console.log("Game over. Thanks for playing!");
-            gameOver = true;
-            quitGame = true;
-            return;
-        }
+        return;
+    }
 
         console.log(`New round starting... ${currentPlayer} will go first.`);
         gameOver = false;
         displayBoard();
-    }
     
-
     if (board.every(space => space === "X" || space === "O")) {
         console.log("It's a draw! No more moves left.");
         gameOver = true;
