@@ -187,6 +187,7 @@ function checkWinner() {
 function resetBoard() {
     board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
     gameOver = false;
+    currentPlayer = currentPlayer === playerOneName ? playerTwoName : playerOneName;
     displayBoard();
     console.log(`New round starting... ${currentPlayer} will go first.`);
 }
