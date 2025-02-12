@@ -133,7 +133,6 @@ function executeMove() {
 
         console.log(`New round starting... ${currentPlayer} will go first.`);
         gameOver = false;
-        board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
         displayBoard();
     }
     
@@ -154,14 +153,9 @@ function switchTurn() {
 
 function checkWinner() {
     const winningCombinations = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6]
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], 
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], 
+        [0, 4, 8], [2, 4, 6]
     ];
 
     for (let combo of winningCombinations) {
@@ -177,14 +171,35 @@ function checkWinner() {
                 playerTwoScore++;
             }
 
-            console.log(`Current score = ${playerOneName}: ${playerOneScore} - ${playerTwoName}: ${playerTwoScore}`)
+            console.log(`🎉 Congratulations, ${winnerName}! You won this round!`);
+            console.log(`Current score = ${playerOneName}: ${playerOneScore} - ${playerTwoName}: ${playerTwoScore}`);
 
+            if (targetScore > 0 && (playerOneScore >= targetScore || playerTwoScore >= targetScore)) {
+                console.log(`🏆 ${winnerName} has reached the target score of ${targetScore}!`);
+                console.log("Game over. Thanks for playing!");
+                gameOver = true;
+                quitGame = true;
+                return winnerName;
+            }
+
+            let playNext = prompt("Press 'Enter' to start the next round.");
+            if (checkQuit(playNext)) return;
+
+            resetBoard();
             return winnerName;
         }
     }
 
     return null;
 }
+
+function resetBoard() {
+    board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+    gameOver = false;
+    displayBoard();
+    console.log(`New round starting... ${currentPlayer} will go first.`);
+}
+
 
 
 function playGame() {
@@ -232,16 +247,9 @@ function playGame() {
                 console.log("Thanks for playing! Goodbye.");
                 return;
             }
-        } else {
-            console.log(`Next round! ${currentPlayer} goes first.`);
         }
-        
-        board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-        gameOver = false;
 
         displayBoard();
         console.log(`New game! This time, ${currentPlayer} will go first.`);
     }
 }
-
-// TODO: FIX ERROR - GAME WIN MESSAGES DO NOT APPEAR
