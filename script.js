@@ -193,7 +193,6 @@ function resetBoard() {
 }
 
 
-
 function playGame() {
     while (true) {
         if (targetScore > 0 && (playerOneScore >= targetScore || playerTwoScore >= targetScore)) {
