@@ -27,3 +27,14 @@ body {
     font-size: 2em;
     cursor: pointer;
 }
+
+#start-game {
+    padding: 10px 20px;
+    font-size: 18px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
