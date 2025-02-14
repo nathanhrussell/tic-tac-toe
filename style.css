@@ -78,3 +78,18 @@ body {
 .modal-content button {
     background-color: #45A049;
 }
+
+#quit-game {
+    padding: 12px 20px;
+    font-size: 18px;
+    margin-top: 20px;
+    cursor: pointer;
+    background-color: #d9434f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+#quit-game:hover {
+    background-color: #c9302c;
+}
