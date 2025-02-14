@@ -93,3 +93,19 @@ body {
 #quit-game:hover {
     background-color: #c9302c;
 }
+
+#play-again {
+    padding: 12px 20px;
+    font-size: 18px;
+    margin-top: 20px;
+    cursor: pointer;
+    background-color: #007fff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    display: none;
+}
+
+#play-again:hover {
+    background-color: #0066cc;
+}
