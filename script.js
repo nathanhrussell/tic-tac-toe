@@ -1,7 +1,9 @@
 document.getElementById("start-game").addEventListener("click", openRulesModal);
 document.getElementById("rules-ok").addEventListener("click", closeRulesAndOpenSetup);
+document.getElementById("confirm-setup").addEventListener("click", setupGame);
 
 let firstTime = true;
+let currentPlayer = null;
 
 function openRulesModal() {
     if (firstTime) {
@@ -20,6 +22,37 @@ function closeRulesAndOpenSetup() {
 
 function openPlayerSetup() {
     document.getElementById("player-setup-modal").style.display = "flex";
+}
+
+function setupGame() {
+
+    const player1Name = document.getElementById("player1-name").value.trim();
+    const player2Name = document.getElementById("player2-name").value.trim();
+
+    if (!player1Name || !player2Name) {
+        alert("Both players must enter a name!");
+        return;
+    }
+
+    const player1Symbol = document.getElementById("player1-symbol");
+    const player2Symbol = player1Symbol === "X" ? "O" : "X";
+
+    const firstTurn = document.getElementById("first-turn").value;
+
+    currentPlayer = firstTurn === "player1" ? player1Name : player2Name;
+
+    window.players = {
+        player1: { name: player1Name, symbol: player1Symbol },
+        player2: { name: player2Name, symbol: player2Symbol }
+    };
+
+    document.getElementById("player-setup-modal").style.display = "none";
+
+    gameOver = false;
+    document.querySelectorAll(".cell").forEach(cell => cell.textContent = "");
+
+    alert(`${currentPlayer} goes first!`)
+
 }
 
 
