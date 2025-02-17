@@ -1,9 +1,12 @@
 document.getElementById("start-game").addEventListener("click", openRulesModal);
 document.getElementById("rules-ok").addEventListener("click", closeRulesAndOpenSetup);
 document.getElementById("confirm-setup").addEventListener("click", setupGame);
+document.getElementById("quit-game").addEventListener("click", quitGame);
 
 let firstTime = true;
 let currentPlayer = null;
+let player1Score = 0;
+let player2Score = 0;
 
 function openRulesModal() {
     if (firstTime) {
@@ -55,6 +58,21 @@ function setupGame() {
 
 }
 
+function quitGame() {
+    if (confirm("Are you sure you want to quit the game?")) {
+        document.querySelectorAll(".cell").forEach(cell => cell.textContent = "");
+
+        gameOver = true;
+        currentPlayer = null;
+        window.players = null;
+        player1Score = 0;
+        player2Score = 0;
+
+        document.getElementById("player-setup-modal").style.display = "flex";
+
+        alert("You have quit the game. Start a new game by entering the players' details.");
+    }
+}
 
 // let board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 // let playerOneChosenSymbol;
