@@ -3,6 +3,10 @@ document.getElementById("rules-ok").addEventListener("click", closeRulesAndOpenS
 document.getElementById("confirm-setup").addEventListener("click", setupGame);
 document.getElementById("quit-game").addEventListener("click", quitGame);
 
+document.querySelectorAll(".cell").forEach(cell => {
+    cell.addEventListener("click", handleCellClick);
+});
+
 let firstTime = true;
 let currentPlayer = null;
 let player1Score = 0;
@@ -72,6 +76,38 @@ function quitGame() {
 
         alert("You have quit the game. Start a new game by entering the players' details.");
     }
+}
+
+function switchTurn() {
+    currentPlayer = currentPlayer === windows.players.player1.name 
+    ? windows.players.player1.name
+    : windows.players.player2.name;
+
+    document.getElementById("turn-indicator").textContent = `It's ${currentPlayer}'s turn!`;
+}
+   
+        
+function handleCellClick(event) {
+    if (gameOver) return;
+
+    const clickedCell = event.target;
+
+    if (clickedCell.textContent !== "") {
+        alert("Cell is already taken! Choose another.");
+        return;
+    }
+
+    const currentSymbol = currentPlayer === windows.players.player1.name 
+    ? windows.players.player1.symbol
+    : windows.players.player2.symbol;
+
+    clickedCell.textContent = currentSymbol;
+
+    if (checkWinner()) {
+        return;
+    }
+
+    switchTurn();
 }
 
 // let board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
