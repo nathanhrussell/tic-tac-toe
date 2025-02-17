@@ -109,6 +109,51 @@ function handleCellClick(event) {
 
     switchTurn();
 }
+function updateScoreDisplay() {
+    document.getElementById("score").textContent =
+    `${players.player1.name}: ${player1Score} - ${players.player2.name}: ${player2Score}`;
+
+    document.getElementById("score").textContent =
+    `(Target: ${targetScore === 0? "No limit" : targetScore})`;
+}
+
+function checkWinner() {
+        const winningCombinations = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], 
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], 
+        [0, 4, 8], [2, 4, 6]
+    ];
+
+    const cells = document.querySelectorAll(".cell");
+
+    for (let combo of winningCombinations) {
+        const [a, b, c] = combo;
+
+        if (cells[a].textContent && cells[a].textContent === cells[b].textContent && cells[a].textContent === cells[c].textContent) {
+            gameOver = true;
+
+            document.getElementById("turn-indicator").textContent = `${currentPlayer} wins!`;
+
+            if (currentPlayer === window.players.player1.name) {
+                player1Score++;
+            } else {
+                player2Score++;
+            }
+
+            updateScoreDisplay();
+            return true;
+        }
+
+        if ([...cells].every(cell => cell.textContent !== "")) {
+            gameOver = true;
+            document.getElementById("turn-indicator").textContent = `It's a draw!`;
+            return true;
+        }
+
+        return false;
+}
+
+}
 
 // let board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 // let playerOneChosenSymbol;
