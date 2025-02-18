@@ -203,10 +203,12 @@ function checkWinner() {
 
             updateScoreDisplay();
 
-            if (targetScore === 0 || (player1Score < targetScore && player2Score < targetScore)) {
-                setTimeout(resetBoard, 1500);
+            if (targetScore === 0 || (player1Score >= targetScore || player2Score >= targetScore)) {
+                document.getElementById("turn-indicator").textContent = `Congratulations, ${currentPlayer}! You won the match!`;
+                document.getElementById("play-again").style.display = "block";
+                
             } else {
-                document.getElementById("play-again").style.display="block";
+                setTimeout(resetBoard, 1500);
             }
             return true;
         }
