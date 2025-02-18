@@ -2,6 +2,7 @@ document.getElementById("start-game").addEventListener("click", openRulesModal);
 document.getElementById("rules-ok").addEventListener("click", closeRulesAndOpenSetup);
 document.getElementById("confirm-setup").addEventListener("click", setupGame);
 document.getElementById("quit-game").addEventListener("click", quitGame);
+document.getElementById("play-again").addEventListener("click", resetBoard);
 
 document.querySelectorAll(".cell").forEach(cell => {
     cell.addEventListener("click", handleCellClick);
