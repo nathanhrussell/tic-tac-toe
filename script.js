@@ -31,6 +31,20 @@ function openPlayerSetup() {
     document.getElementById("player-setup-modal").style.display = "flex";
 }
 
+
+function startGame() {
+    gameOver = false;
+
+    document.querySelectorAll(".cell").forEach(cell => {
+        cell.textContent = "";
+        cell.addEventListener("click", handleCellClick);
+    });
+
+    updateScoreDisplay();
+
+    document.getElementById("turn-indicator").textContent = `It's ${currentPlayer}'s turn!`
+}
+
 function setupGame() {
 
     const player1Name = document.getElementById("player1-name").value.trim();
@@ -59,6 +73,8 @@ function setupGame() {
     document.querySelectorAll(".cell").forEach(cell => cell.textContent = "");
 
     alert(`${currentPlayer} goes first!`)
+
+    startGame();
 
 }
 
@@ -111,7 +127,7 @@ function handleCellClick(event) {
 }
 function updateScoreDisplay() {
     document.getElementById("score").textContent =
-    `${players.player1.name}: ${player1Score} - ${players.player2.name}: ${player2Score}`;
+    `${window.player1.name}: ${player1Score} - ${window.player2.name}: ${player2Score}`;
 
     document.getElementById("score").textContent =
     `(Target: ${targetScore === 0? "No limit" : targetScore})`;
