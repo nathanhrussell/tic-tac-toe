@@ -71,10 +71,15 @@ function setupGame() {
         player2: { name: player2Name, symbol: player2Symbol }
     };
 
+    player1Score = 0;
+    player2Score = 0;
+
     document.getElementById("player-setup-modal").style.display = "none";
 
     gameOver = false;
     document.querySelectorAll(".cell").forEach(cell => cell.textContent = "");
+
+    updateScoreDisplay();
 
     alert(`${currentPlayer} goes first!`)
 
@@ -135,7 +140,7 @@ function updateScoreDisplay() {
     document.getElementById("score").textContent =
     `${window.players.player1.name}: ${player1Score} - ${window.players.player2.name}: ${player2Score}`;
 
-    document.getElementById("score").textContent =
+    document.getElementById("target-score").textContent =
     `(Target: ${targetScore === 0? "No limit" : targetScore})`;
 }
 
