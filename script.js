@@ -13,6 +13,7 @@ let currentPlayer = null;
 let player1Score = 0;
 let player2Score = 0;
 let targetScore = 0;
+let gameOver = false;
 
 function openRulesModal() {
     if (firstTime) {
