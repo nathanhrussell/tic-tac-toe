@@ -137,6 +137,7 @@ function handleCellClick(event) {
 
 
 }
+
 function updateScoreDisplay() {
     document.getElementById("score").textContent =
     `${window.players.player1.name}: ${player1Score} - ${window.players.player2.name}: ${player2Score}`;
@@ -146,20 +147,35 @@ function updateScoreDisplay() {
 }
 
 function resetBoard() {
-    gameOver = false;
+    if (targetScore !== 0 && (player1Score >= targetScore || player2Score >= targetScore)) {
 
-    document.querySelectorAll(".cell").forEach(cell => {
-        cell.textContent = "";
-        cell.addEventListener("click", handleCellClick);
-    });
+        player1Score = 0;
+        player2Score = 0;
+        currentPlayer = null;
+        window.players = null;
+        gameOver = true;
+        
+        document.getElementById("play-again").style.display = "none";
+        document.getElementById("score").textContent = "";
+        document.getElementById("target-score").textContent = "";
+        
+        document.getElementById("player-setup-modal").style.display = "flex";
+    } else {
 
-    document.getElementById("play-again").style.display = "none";
+        gameOver = false;
+        document.querySelectorAll(".cell").forEach(cell => {
+            cell.textContent = "";
+            cell.addEventListener("click", handleCellClick);
+        });
 
-    currentPlayer = currentPlayer === window.players.player1.name
-        ? window.players.player2.name
-        : window.players.player1.name
+        document.getElementById("play-again").style.display = "none";
 
-    document.getElementById("turn-indicator").textContent = `It's ${currentPlayer}'s turn!`;
+        currentPlayer = currentPlayer === window.players.player1.name
+            ? window.players.player2.name
+            : window.players.player1.name;
+
+        document.getElementById("turn-indicator").textContent = `It's ${currentPlayer}'s turn!`;
+    }
 }
 
 function checkWinner() {
