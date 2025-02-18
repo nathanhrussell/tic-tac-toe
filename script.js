@@ -97,8 +97,8 @@ function quitGame() {
 
 function switchTurn() {
     currentPlayer = currentPlayer === window.players.player1.name 
-    ? window.players.player1.name
-    : window.players.player2.name;
+    ? window.players.player2.name
+    : window.players.player1.name;
 
     document.getElementById("turn-indicator").textContent = `It's ${currentPlayer}'s turn!`;
 }
@@ -120,11 +120,11 @@ function handleCellClick(event) {
 
     clickedCell.textContent = currentSymbol;
 
-    if (checkWinner()) {
-        return;
+    if (!checkWinner()) {
+        switchTurn();
     }
 
-    switchTurn();
+
 }
 function updateScoreDisplay() {
     document.getElementById("score").textContent =
