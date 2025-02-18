@@ -11,6 +11,7 @@ let firstTime = true;
 let currentPlayer = null;
 let player1Score = 0;
 let player2Score = 0;
+let targetScore = 0;
 
 function openRulesModal() {
     if (firstTime) {
@@ -55,7 +56,7 @@ function setupGame() {
         return;
     }
 
-    const player1Symbol = document.getElementById("player1-symbol");
+    const player1Symbol = document.getElementById("player1-symbol").value;
     const player2Symbol = player1Symbol === "X" ? "O" : "X";
 
     const firstTurn = document.getElementById("first-turn").value;
@@ -95,9 +96,9 @@ function quitGame() {
 }
 
 function switchTurn() {
-    currentPlayer = currentPlayer === windows.players.player1.name 
-    ? windows.players.player1.name
-    : windows.players.player2.name;
+    currentPlayer = currentPlayer === window.players.player1.name 
+    ? window.players.player1.name
+    : window.players.player2.name;
 
     document.getElementById("turn-indicator").textContent = `It's ${currentPlayer}'s turn!`;
 }
@@ -113,9 +114,9 @@ function handleCellClick(event) {
         return;
     }
 
-    const currentSymbol = currentPlayer === windows.players.player1.name 
-    ? windows.players.player1.symbol
-    : windows.players.player2.symbol;
+    const currentSymbol = currentPlayer === window.players.player1.name 
+    ? window.players.player1.symbol
+    : window.players.player2.symbol;
 
     clickedCell.textContent = currentSymbol;
 
@@ -127,7 +128,7 @@ function handleCellClick(event) {
 }
 function updateScoreDisplay() {
     document.getElementById("score").textContent =
-    `${window.player1.name}: ${player1Score} - ${window.player2.name}: ${player2Score}`;
+    `${window.players.player1.name}: ${player1Score} - ${window.players.player2.name}: ${player2Score}`;
 
     document.getElementById("score").textContent =
     `(Target: ${targetScore === 0? "No limit" : targetScore})`;
