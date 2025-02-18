@@ -157,9 +157,9 @@ function resetBoard() {
 
     currentPlayer = currentPlayer === window.players.player1.name
         ? window.players.player2.name
-        : window.players.player2.name
+        : window.players.player1.name
 
-    document.getElementById("turn-indicator").textContent - `It's ${currentPlayer}'s turn!`;
+    document.getElementById("turn-indicator").textContent = `It's ${currentPlayer}'s turn!`;
 }
 
 function checkWinner() {
