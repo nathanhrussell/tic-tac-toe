@@ -63,6 +63,9 @@ function setupGame() {
 
     currentPlayer = firstTurn === "player1" ? player1Name : player2Name;
 
+    const targetScoreInput = document.getElementById("target-score-input").value.trim();
+    targetScore = targetScoreInput ? parseInt(targetScoreInput, 10) : 0;
+
     window.players = {
         player1: { name: player1Name, symbol: player1Symbol },
         player2: { name: player2Name, symbol: player2Symbol }
