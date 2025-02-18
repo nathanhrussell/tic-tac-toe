@@ -120,9 +120,11 @@ function handleCellClick(event) {
 
     clickedCell.textContent = currentSymbol;
 
-    if (!checkWinner()) {
-        switchTurn();
+    if (checkWinner()) {
+        return;
     }
+
+    switchTurn();
 
 
 }
@@ -160,16 +162,15 @@ function checkWinner() {
             updateScoreDisplay();
             return true;
         }
+    }
 
-        if ([...cells].every(cell => cell.textContent !== "")) {
-            gameOver = true;
-            document.getElementById("turn-indicator").textContent = `It's a draw!`;
-            return true;
-        }
+    if ([...cells].every(cell => cell.textContent !== "")) {
+        gameOver = true;
+        document.getElementById("turn-indicator").textContent = `It's a draw!`;
+        return true;
+    }
 
-        return false;
-}
-
+    return false;
 }
 
 // let board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
