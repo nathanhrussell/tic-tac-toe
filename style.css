@@ -124,12 +124,30 @@ body {
     display: none;
 }
 
-#player-setup-modal span {
-    font-size: 18px;
+#player-setup-modal label {
+    font-size: 12px;
 }
 
 #turn-indicator {
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
+}
+
+.modal-content label, select {
+    display: block;
+    font-weight: bold;
+    text-align: left;
+    margin-top: 15px;
+}
+
+.modal-content input {
+    display: block;
+    font-weight: bold;
+    text-align: left;
+    margin-top: 15px;
+}
+
+#confirm-setup {
+    margin-top: 30px;
 }
