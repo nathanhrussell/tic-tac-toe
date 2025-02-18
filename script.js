@@ -143,7 +143,7 @@ function updateScoreDisplay() {
     `${window.players.player1.name}: ${player1Score} - ${window.players.player2.name}: ${player2Score}`;
 
     document.getElementById("target-score").textContent =
-    `(Target: ${targetScore === 0? "No limit" : targetScore})`;
+    `(First to: ${targetScore === 0? "No limit" : targetScore})`;
 }
 
 function resetBoard() {
