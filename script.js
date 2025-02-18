@@ -144,6 +144,19 @@ function updateScoreDisplay() {
     `(Target: ${targetScore === 0? "No limit" : targetScore})`;
 }
 
+function resetBoard() {
+    gameOver = false;
+
+    document.querySelectorAll(".cell").forEach(cell => {
+        cell.textContent = "";
+        cell.addEventListener("click", handleCellClick);
+    });
+
+    document.getElementById("play-again").style.display = "none";
+
+    document.getElementById("turn-indicator").textContent - `It's ${currentPlayer}'s turn!`;
+}
+
 function checkWinner() {
         const winningCombinations = [
         [0, 1, 2], [3, 4, 5], [6, 7, 8], 
@@ -168,6 +181,12 @@ function checkWinner() {
             }
 
             updateScoreDisplay();
+
+            if (targetScore === 0 || (player1Score < targetScore && player2Score < targetScore)) {
+                setTimeout(resetBoard, 1500);
+            } else {
+                document.getElementById("play-again").style.display="block";
+            }
             return true;
         }
     }
@@ -175,6 +194,9 @@ function checkWinner() {
     if ([...cells].every(cell => cell.textContent !== "")) {
         gameOver = true;
         document.getElementById("turn-indicator").textContent = `It's a draw!`;
+
+        setTimeout(resetBoard, 1500);
+
         return true;
     }
 
