@@ -1,55 +1,128 @@
-document.getElementById("start-game").addEventListener("click", openRulesModal);
-document.getElementById("rules-ok").addEventListener("click", closeRulesAndOpenSetup);
-document.getElementById("confirm-setup").addEventListener("click", setupGame);
-document.getElementById("quit-game").addEventListener("click", quitGame);
-document.getElementById("play-again").addEventListener("click", resetBoard);
-
-document.querySelectorAll(".cell").forEach(cell => {
-    cell.addEventListener("click", handleCellClick);
-});
-
-let firstTime = true;
-let currentPlayer = null;
-let player1Score = 0;
-let player2Score = 0;
-let targetScore = 0;
-let gameOver = false;
-
-function openRulesModal() {
-    if (firstTime) {
-        document.getElementById("rules-modal").style.display = "flex";
-        document.getElementById("start-game").style.display = "none";
-    } else {
-        openPlayerSetup();
-    }
+function createPlayer(name, symbol) {
+    return {
+        name,
+        symbol,
+        score: 0
+    };
 }
 
-function closeRulesAndOpenSetup() {
-    document.getElementById("rules-modal").style.display = "none";
-    firstTime = false;
-    openPlayerSetup();
+function TicTacToe(player1, player2, targetScore = 0) {
+    this.players = [player1, player2];
+    this.currentPlayer = player1;
+    this.targetScore = targetScore;
+    this.gameOver = false;
 }
 
-function openPlayerSetup() {
-    document.getElementById("player-setup-modal").style.display = "flex";
-}
-
-
-function startGame() {
-    gameOver = false;
-
+TicTacToe.prototype.start = function() {
+    this.gameOver = false;
     document.querySelectorAll(".cell").forEach(cell => {
         cell.textContent = "";
-        cell.addEventListener("click", handleCellClick);
+        cell.addEventListener("click", (event) => this.handleCellClick(event));
     });
 
-    updateScoreDisplay();
+    this.updateScoreDisplay();
+    document.getElementById("turn-indicator").textContent = `It's ${this.currentPlayer.name}'s turn!`;
+};
 
-    document.getElementById("turn-indicator").textContent = `It's ${currentPlayer}'s turn!`
-}
+TicTacToe.prototype.switchTurn = function() {
+    this.currentPlayer = this.currentPlayer === this.players[0] ? this.players[1] : this.players[0];
+    document.getElementById("turn-indicator").textContent = `It's ${this.currentPlayer.name}'s turn!`;
+};
+
+TicTacToe.prototype.handleCellClick = function(event) {
+    if (this.gameOver) return;
+
+    const clickedCell = event.target;
+    if (clickedCell.textContent !== "") {
+        alert("Cell is already taken! Choose another.");
+        return;
+    }
+
+    clickedCell.textContent = this.currentPlayer.symbol;
+
+    if (this.checkWinner()) return;
+
+    this.switchTurn();
+};
+
+TicTacToe.prototype.checkWinner = function() {
+    const winningCombinations = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], 
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], 
+        [0, 4, 8], [2, 4, 6]
+    ];
+
+    const cells = document.querySelectorAll(".cell");
+
+    for (let combo of winningCombinations) {
+        const [a, b, c] = combo;
+        if (cells[a].textContent && cells[a].textContent === cells[b].textContent && cells[a].textContent === cells[c].textContent) {
+            this.gameOver = true;
+            document.getElementById("turn-indicator").textContent = `${this.currentPlayer.name} wins!`;
+
+            this.currentPlayer.score++;
+            this.updateScoreDisplay();
+
+            if (this.targetScore === 0 || this.currentPlayer.score >= this.targetScore) {
+                document.getElementById("turn-indicator").textContent = `Congratulations, ${this.currentPlayer.name}! You won the match!`;
+                document.getElementById("play-again").style.display = "block";
+            } else {
+                setTimeout(() => this.resetBoard(), 1500);
+            }
+            return true;
+        }
+    }
+
+    if ([...cells].every(cell => cell.textContent !== "")) {
+        this.gameOver = true;
+        document.getElementById("turn-indicator").textContent = `It's a draw!`;
+        setTimeout(() => this.resetBoard(), 1500);
+        return true;
+    }
+
+    return false;
+};
+
+TicTacToe.prototype.updateScoreDisplay = function() {
+    document.getElementById("score").textContent =
+        `${this.players[0].name}: ${this.players[0].score} - ${this.players[1].name}: ${this.players[1].score}`;
+
+    document.getElementById("target-score").textContent =
+        `(First to: ${this.targetScore === 0 ? "No limit" : this.targetScore})`;
+};
+
+TicTacToe.prototype.resetBoard = function() {
+    if (this.targetScore !== 0 && (this.players[0].score >= this.targetScore || this.players[1].score >= this.targetScore)) {
+        this.players[0].score = 0;
+        this.players[1].score = 0;
+        this.gameOver = true;
+        document.getElementById("play-again").style.display = "none";
+        document.getElementById("player-setup-modal").style.display = "flex";
+    } else {
+        this.gameOver = false;
+        document.querySelectorAll(".cell").forEach(cell => {
+            cell.textContent = "";
+            cell.addEventListener("click", (event) => this.handleCellClick(event));
+        });
+
+        document.getElementById("play-again").style.display = "none";
+        this.switchTurn();
+    }
+};
+
+TicTacToe.prototype.quitGame = function() {
+    if (confirm("Are you sure you want to quit the game?")) {
+        this.players[0].score = 0;
+        this.players[1].score = 0;
+        this.gameOver = true;
+        document.getElementById("player-setup-modal").style.display = "flex";
+        alert("You have quit the game. Start a new game by entering the players' details.");
+    }
+};
+
+let game;
 
 function setupGame() {
-
     const player1Name = document.getElementById("player1-name").value.trim();
     const player2Name = document.getElementById("player2-name").value.trim();
 
@@ -60,172 +133,270 @@ function setupGame() {
 
     const player1Symbol = document.getElementById("player1-symbol").value;
     const player2Symbol = player1Symbol === "X" ? "O" : "X";
-
     const firstTurn = document.getElementById("first-turn").value;
-
-    currentPlayer = firstTurn === "player1" ? player1Name : player2Name;
-
     const targetScoreInput = document.getElementById("target-score-input").value.trim();
-    targetScore = targetScoreInput ? parseInt(targetScoreInput, 10) : 0;
+    const targetScore = targetScoreInput ? parseInt(targetScoreInput, 10) : 0;
 
-    window.players = {
-        player1: { name: player1Name, symbol: player1Symbol },
-        player2: { name: player2Name, symbol: player2Symbol }
-    };
+    const player1 = createPlayer(player1Name, player1Symbol);
+    const player2 = createPlayer(player2Name, player2Symbol);
 
-    player1Score = 0;
-    player2Score = 0;
+    game = new TicTacToe(firstTurn === "player1" ? player1 : player2, firstTurn === "player1" ? player2 : player1, targetScore);
 
     document.getElementById("player-setup-modal").style.display = "none";
 
-    gameOver = false;
-    document.querySelectorAll(".cell").forEach(cell => cell.textContent = "");
+    alert(`${game.currentPlayer.name} goes first!`);
 
-    updateScoreDisplay();
-
-    alert(`${currentPlayer} goes first!`)
-
-    startGame();
-
+    game.start();
 }
 
-function quitGame() {
-    if (confirm("Are you sure you want to quit the game?")) {
-        document.querySelectorAll(".cell").forEach(cell => cell.textContent = "");
+document.getElementById("confirm-setup").addEventListener("click", setupGame);
+document.getElementById("quit-game").addEventListener("click", () => game.quitGame());
+document.getElementById("play-again").addEventListener("click", () => game.resetBoard());
 
-        gameOver = true;
-        currentPlayer = null;
-        window.players = null;
-        player1Score = 0;
-        player2Score = 0;
-
+document.getElementById("start-game").addEventListener("click", function() {
+    if (window.firstTime) {
+        document.getElementById("rules-modal").style.display = "flex";
+        document.getElementById("start-game").style.display = "none";
+    } else {
         document.getElementById("player-setup-modal").style.display = "flex";
-
-        alert("You have quit the game. Start a new game by entering the players' details.");
     }
-}
+});
 
-function switchTurn() {
-    currentPlayer = currentPlayer === window.players.player1.name 
-    ? window.players.player2.name
-    : window.players.player1.name;
+document.getElementById("rules-ok").addEventListener("click", function() {
+    document.getElementById("rules-modal").style.display = "none";
+    window.firstTime = false;
+    document.getElementById("player-setup-modal").style.display = "flex";
+});
 
-    document.getElementById("turn-indicator").textContent = `It's ${currentPlayer}'s turn!`;
-}
+
+// document.getElementById("start-game").addEventListener("click", openRulesModal);
+// document.getElementById("rules-ok").addEventListener("click", closeRulesAndOpenSetup);
+// document.getElementById("confirm-setup").addEventListener("click", setupGame);
+// document.getElementById("quit-game").addEventListener("click", quitGame);
+// document.getElementById("play-again").addEventListener("click", resetBoard);
+
+// document.querySelectorAll(".cell").forEach(cell => {
+//     cell.addEventListener("click", handleCellClick);
+// });
+
+// let firstTime = true;
+// let currentPlayer = null;
+// let player1Score = 0;
+// let player2Score = 0;
+// let targetScore = 0;
+// let gameOver = false;
+
+// function openRulesModal() {
+//     if (firstTime) {
+//         document.getElementById("rules-modal").style.display = "flex";
+//         document.getElementById("start-game").style.display = "none";
+//     } else {
+//         openPlayerSetup();
+//     }
+// }
+
+// function closeRulesAndOpenSetup() {
+//     document.getElementById("rules-modal").style.display = "none";
+//     firstTime = false;
+//     openPlayerSetup();
+// }
+
+// function openPlayerSetup() {
+//     document.getElementById("player-setup-modal").style.display = "flex";
+// }
+
+
+// function startGame() {
+//     gameOver = false;
+
+//     document.querySelectorAll(".cell").forEach(cell => {
+//         cell.textContent = "";
+//         cell.addEventListener("click", handleCellClick);
+//     });
+
+//     updateScoreDisplay();
+
+//     document.getElementById("turn-indicator").textContent = `It's ${currentPlayer}'s turn!`
+// }
+
+// function setupGame() {
+
+//     const player1Name = document.getElementById("player1-name").value.trim();
+//     const player2Name = document.getElementById("player2-name").value.trim();
+
+//     if (!player1Name || !player2Name) {
+//         alert("Both players must enter a name!");
+//         return;
+//     }
+
+//     const player1Symbol = document.getElementById("player1-symbol").value;
+//     const player2Symbol = player1Symbol === "X" ? "O" : "X";
+
+//     const firstTurn = document.getElementById("first-turn").value;
+
+//     currentPlayer = firstTurn === "player1" ? player1Name : player2Name;
+
+//     const targetScoreInput = document.getElementById("target-score-input").value.trim();
+//     targetScore = targetScoreInput ? parseInt(targetScoreInput, 10) : 0;
+
+//     window.players = {
+//         player1: { name: player1Name, symbol: player1Symbol },
+//         player2: { name: player2Name, symbol: player2Symbol }
+//     };
+
+//     player1Score = 0;
+//     player2Score = 0;
+
+//     document.getElementById("player-setup-modal").style.display = "none";
+
+//     gameOver = false;
+//     document.querySelectorAll(".cell").forEach(cell => cell.textContent = "");
+
+//     updateScoreDisplay();
+
+//     alert(`${currentPlayer} goes first!`)
+
+//     startGame();
+
+// }
+
+// function quitGame() {
+//     if (confirm("Are you sure you want to quit the game?")) {
+//         document.querySelectorAll(".cell").forEach(cell => cell.textContent = "");
+
+//         gameOver = true;
+//         currentPlayer = null;
+//         window.players = null;
+//         player1Score = 0;
+//         player2Score = 0;
+
+//         document.getElementById("player-setup-modal").style.display = "flex";
+
+//         alert("You have quit the game. Start a new game by entering the players' details.");
+//     }
+// }
+
+// function switchTurn() {
+//     currentPlayer = currentPlayer === window.players.player1.name 
+//     ? window.players.player2.name
+//     : window.players.player1.name;
+
+//     document.getElementById("turn-indicator").textContent = `It's ${currentPlayer}'s turn!`;
+// }
    
         
-function handleCellClick(event) {
-    if (gameOver) return;
+// function handleCellClick(event) {
+//     if (gameOver) return;
 
-    const clickedCell = event.target;
+//     const clickedCell = event.target;
 
-    if (clickedCell.textContent !== "") {
-        alert("Cell is already taken! Choose another.");
-        return;
-    }
+//     if (clickedCell.textContent !== "") {
+//         alert("Cell is already taken! Choose another.");
+//         return;
+//     }
 
-    const currentSymbol = currentPlayer === window.players.player1.name 
-    ? window.players.player1.symbol
-    : window.players.player2.symbol;
+//     const currentSymbol = currentPlayer === window.players.player1.name 
+//     ? window.players.player1.symbol
+//     : window.players.player2.symbol;
 
-    clickedCell.textContent = currentSymbol;
+//     clickedCell.textContent = currentSymbol;
 
-    if (checkWinner()) {
-        return;
-    }
+//     if (checkWinner()) {
+//         return;
+//     }
 
-    switchTurn();
+//     switchTurn();
 
 
-}
+// }
 
-function updateScoreDisplay() {
-    document.getElementById("score").textContent =
-    `${window.players.player1.name}: ${player1Score} - ${window.players.player2.name}: ${player2Score}`;
+// function updateScoreDisplay() {
+//     document.getElementById("score").textContent =
+//     `${window.players.player1.name}: ${player1Score} - ${window.players.player2.name}: ${player2Score}`;
 
-    document.getElementById("target-score").textContent =
-    `(First to: ${targetScore === 0? "No limit" : targetScore})`;
-}
+//     document.getElementById("target-score").textContent =
+//     `(First to: ${targetScore === 0? "No limit" : targetScore})`;
+// }
 
-function resetBoard() {
-    if (targetScore !== 0 && (player1Score >= targetScore || player2Score >= targetScore)) {
+// function resetBoard() {
+//     if (targetScore !== 0 && (player1Score >= targetScore || player2Score >= targetScore)) {
 
-        player1Score = 0;
-        player2Score = 0;
-        currentPlayer = null;
-        window.players = null;
-        gameOver = true;
+//         player1Score = 0;
+//         player2Score = 0;
+//         currentPlayer = null;
+//         window.players = null;
+//         gameOver = true;
         
-        document.getElementById("play-again").style.display = "none";
-        document.getElementById("score").textContent = "";
-        document.getElementById("target-score").textContent = "";
+//         document.getElementById("play-again").style.display = "none";
+//         document.getElementById("score").textContent = "";
+//         document.getElementById("target-score").textContent = "";
         
-        document.getElementById("player-setup-modal").style.display = "flex";
-    } else {
+//         document.getElementById("player-setup-modal").style.display = "flex";
+//     } else {
 
-        gameOver = false;
-        document.querySelectorAll(".cell").forEach(cell => {
-            cell.textContent = "";
-            cell.addEventListener("click", handleCellClick);
-        });
+//         gameOver = false;
+//         document.querySelectorAll(".cell").forEach(cell => {
+//             cell.textContent = "";
+//             cell.addEventListener("click", handleCellClick);
+//         });
 
-        document.getElementById("play-again").style.display = "none";
+//         document.getElementById("play-again").style.display = "none";
 
-        currentPlayer = currentPlayer === window.players.player1.name
-            ? window.players.player2.name
-            : window.players.player1.name;
+//         currentPlayer = currentPlayer === window.players.player1.name
+//             ? window.players.player2.name
+//             : window.players.player1.name;
 
-        document.getElementById("turn-indicator").textContent = `It's ${currentPlayer}'s turn!`;
-    }
-}
+//         document.getElementById("turn-indicator").textContent = `It's ${currentPlayer}'s turn!`;
+//     }
+// }
 
-function checkWinner() {
-        const winningCombinations = [
-        [0, 1, 2], [3, 4, 5], [6, 7, 8], 
-        [0, 3, 6], [1, 4, 7], [2, 5, 8], 
-        [0, 4, 8], [2, 4, 6]
-    ];
+// function checkWinner() {
+//         const winningCombinations = [
+//         [0, 1, 2], [3, 4, 5], [6, 7, 8], 
+//         [0, 3, 6], [1, 4, 7], [2, 5, 8], 
+//         [0, 4, 8], [2, 4, 6]
+//     ];
 
-    const cells = document.querySelectorAll(".cell");
+//     const cells = document.querySelectorAll(".cell");
 
-    for (let combo of winningCombinations) {
-        const [a, b, c] = combo;
+//     for (let combo of winningCombinations) {
+//         const [a, b, c] = combo;
 
-        if (cells[a].textContent && cells[a].textContent === cells[b].textContent && cells[a].textContent === cells[c].textContent) {
-            gameOver = true;
+//         if (cells[a].textContent && cells[a].textContent === cells[b].textContent && cells[a].textContent === cells[c].textContent) {
+//             gameOver = true;
 
-            document.getElementById("turn-indicator").textContent = `${currentPlayer} wins!`;
+//             document.getElementById("turn-indicator").textContent = `${currentPlayer} wins!`;
 
-            if (currentPlayer === window.players.player1.name) {
-                player1Score++;
-            } else {
-                player2Score++;
-            }
+//             if (currentPlayer === window.players.player1.name) {
+//                 player1Score++;
+//             } else {
+//                 player2Score++;
+//             }
 
-            updateScoreDisplay();
+//             updateScoreDisplay();
 
-            if (targetScore === 0 || (player1Score >= targetScore || player2Score >= targetScore)) {
-                document.getElementById("turn-indicator").textContent = `Congratulations, ${currentPlayer}! You won the match!`;
-                document.getElementById("play-again").style.display = "block";
+//             if (targetScore === 0 || (player1Score >= targetScore || player2Score >= targetScore)) {
+//                 document.getElementById("turn-indicator").textContent = `Congratulations, ${currentPlayer}! You won the match!`;
+//                 document.getElementById("play-again").style.display = "block";
                 
-            } else {
-                setTimeout(resetBoard, 1500);
-            }
-            return true;
-        }
-    }
+//             } else {
+//                 setTimeout(resetBoard, 1500);
+//             }
+//             return true;
+//         }
+//     }
 
-    if ([...cells].every(cell => cell.textContent !== "")) {
-        gameOver = true;
-        document.getElementById("turn-indicator").textContent = `It's a draw!`;
+//     if ([...cells].every(cell => cell.textContent !== "")) {
+//         gameOver = true;
+//         document.getElementById("turn-indicator").textContent = `It's a draw!`;
 
-        setTimeout(resetBoard, 1500);
+//         setTimeout(resetBoard, 1500);
 
-        return true;
-    }
+//         return true;
+//     }
 
-    return false;
-}
+//     return false;
+// }
 
 // let board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 // let playerOneChosenSymbol;
