@@ -100,12 +100,17 @@ TicTacToe.prototype.resetBoard = function() {
         document.getElementById("player-setup-modal").style.display = "flex";
     } else {
         this.gameOver = false;
-        document.querySelectorAll(".cell").forEach(cell => {
-            cell.textContent = "";
-            cell.addEventListener("click", (event) => this.handleCellClick(event));
+        const cells = document.querySelectorAll(".cell");
+
+        cells.forEach(cell => {
+            let newCell = cell.cloneNode(true);
+            newCell.textContent = "";
+            newCell.addEventListener("click", (event) => this.handleCellClick(event));
+            cell.replaceWith(newCell);
         });
 
         document.getElementById("play-again").style.display = "none";
+        
         this.switchTurn();
     }
 };
